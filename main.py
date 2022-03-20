@@ -5,7 +5,7 @@ T1=Train_class()
 n=0
 
 while(n!=5):
-    print("1.Create Train\n2.Get Train Details\n3.Update Train Details\n4.Delete Train Details\n5.Exit")
+    print("1.Create Train\n2.Get All Trains\n3.Train Details by Id\n4.Update Train Details\n5.Delete Train Details\n6.Exit")
     try:
         n=int(input())
         try:
@@ -34,7 +34,12 @@ while(n!=5):
         json_inp=json.loads(data)
         T1.create_train(json_inp)
 
+
     if(n==2):
+        T1.get_trains()
+
+
+    if(n==3):
         print("Train No:")
         try:
             train_no=int(input())
@@ -45,7 +50,7 @@ while(n!=5):
         T1.get_train(train_no)
 
 
-    if(n==3):
+    if(n==4):
         try:
             train_no=int(input("Enter the train no:"))
             name = input("Enter the Name:")
@@ -58,7 +63,7 @@ while(n!=5):
         except:
             print("Invalid train number")
 
-    if(n==4):
+    if(n==5):
         try:
             train_no=int(input("Enter the train no you want to delete:"))
             T1.delete_train(train_no)

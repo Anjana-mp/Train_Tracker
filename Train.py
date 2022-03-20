@@ -51,6 +51,22 @@ class Train_class:
             except Exception as e:
                 print(e)
 
+    @timeit
+    def get_trains(self):
+        sel = t1.select().order_by(asc(t1.columns.train_no))
+        res = engine.execute(sel)
+        no = res.rowcount
+        try:
+            if (no > 0):
+                for row in res:
+                    result = list((row))
+                    json_result = json.dumps(result)
+                    print(json_result)
+            else:
+                raise Exception("Train Doesnot Exists")
+        except Exception as e:
+            print(e)
+
 
     @timeit
     def update_train(self,train_no,name,station):
