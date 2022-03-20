@@ -29,9 +29,10 @@ class Train_class:
             t1.create(checkfirst=True)
             ins=t1.insert().values(train_no=json_file['no'],Name=json_file['Name'],Station=json_file['Station'])
             engine.execute(ins)
+            print("Created Successfully")
         except:
             print("Train no must be unique")
-        print("Created Successfully")
+
 
 
     @timeit

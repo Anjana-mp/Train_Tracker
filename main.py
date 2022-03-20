@@ -7,14 +7,17 @@ n=0
 while(n!=5):
     print("1.Create Train\n2.Get Train Details\n3.Update Train Details\n4.Delete Train Details\n5.Exit")
     try:
+        n=int(input())
         try:
-            n=int(input())
-        except:
-            print("Enter valid choice")
-        if(n>5):
-            raise Exception("Value must be below or equal to 5")
-    except Exception as e:
-        print(e)
+            if (n > 5):
+                raise Exception("Value must be below or equal to 5")
+        except Exception as e:
+            print(e)
+    except:
+        print("Enter Valid Choice")
+
+
+
     if(n==1):
         print("Enter Train Details")
         json_inp={}
@@ -36,37 +39,33 @@ while(n!=5):
         try:
             train_no=int(input())
         except:
-            print("Train No must be integer")
+            print("Invalid train number")
             continue
         #print(train_no)
         T1.get_train(train_no)
 
 
     if(n==3):
-        train_no=input("Enter the train no:")
-        name=input("Enter the Name:")
-        station=input("Enter the station:")
         try:
-            if (train_no== ""):
-                raise Exception("Train no Must not be empty")
-        except Exception as e:
-            print(e)
-            continue
-        if(name==""):
-            name="name"
-        elif(station==""):
-            station="station"
-        T1.update_train(train_no,name,station)
+            train_no=int(input("Enter the train no:"))
+            name = input("Enter the Name:")
+            station = input("Enter the station:")
+            if(name==""):
+                name="name"
+            elif(station==""):
+                station="station"
+            T1.update_train(train_no,name,station)
+        except:
+            print("Invalid train number")
 
     if(n==4):
-        train_no=input("Enter the train no you want to delete:")
         try:
-            if (train_no== ""):
-                raise Exception("Train no Must not be empty")
-        except Exception as e:
-            print(e)
-            continue
-        T1.delete_train(train_no)
+            train_no=int(input("Enter the train no you want to delete:"))
+            T1.delete_train(train_no)
+        except:
+            print("Invalid Train number")
+
+
 
 
 
