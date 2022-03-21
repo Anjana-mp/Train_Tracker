@@ -1,8 +1,8 @@
 import json
+n=0
 import pandas as pd
 from Train import Train_class
 T1=Train_class()
-n=0
 
 while(n!=5):
     print("1.Create Train\n2.Get All Trains\n3.Train Details by Id\n4.Update Train Details\n5.Delete Train Details\n6.Exit")
@@ -10,11 +10,11 @@ while(n!=5):
         n=int(input())
         try:
             if (n > 5):
-                raise Exception("Value must be below or equal to 5")
+                raise Exception(json.dumps("Value must be below or equal to 5"))
         except Exception as e:
             print(e)
     except:
-        print("Enter Valid Choice")
+        print(json.dumps("Enter Valid Choice"))
 
 
 
@@ -44,24 +44,27 @@ while(n!=5):
         try:
             train_no=int(input())
         except:
-            print("Invalid train number")
+            print(json.dumps("Invalid train number"))
             continue
         #print(train_no)
         T1.get_train(train_no)
 
 
     if(n==4):
+        json_inp = {}
         try:
-            train_no=int(input("Enter the train no:"))
-            name = input("Enter the Name:")
-            station = input("Enter the station:")
-            if(name==""):
-                name="name"
-            elif(station==""):
-                station="station"
-            T1.update_train(train_no,name,station)
+            json_inp['no'] = input('Enter Train No:')
+            json_inp['name'] = input('Name:')
+            json_inp['station'] = input('Station:')
+            if(json_inp['name']==""):
+                json_inp['name']="name"
+            elif(json_inp['station']==""):
+                json_inp['station']="station"
+            data = json.dumps(json_inp)
+            json_inp = json.loads(data)
+            T1.update_train(json_inp)
         except:
-            print("Invalid train number")
+            print(json.dumps("Invalid train number"))
 
     if(n==5):
         try:

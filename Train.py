@@ -29,9 +29,9 @@ class Train_class:
             t1.create(checkfirst=True)
             ins=t1.insert().values(train_no=json_file['no'],Name=json_file['Name'],Station=json_file['Station'])
             engine.execute(ins)
-            print("Created Successfully")
+            print(json.dumps("Created Successfully"))
         except:
-            print("Train no must be unique")
+            print(json.dumps("Train no must be unique"))
 
 
 
@@ -47,7 +47,7 @@ class Train_class:
                         json_result=json.dumps(result)
                         print(json_result)
                 else:
-                    raise Exception("Train Doesnot Exists")
+                    raise Exception(json.dumps("Train Doesnot Exists"))
             except Exception as e:
                 print(e)
 
@@ -63,32 +63,32 @@ class Train_class:
                     json_result = json.dumps(result)
                     print(json_result)
             else:
-                raise Exception("Train Doesnot Exists")
+                raise Exception(json.dumps("Train Doesnot Exists"))
         except Exception as e:
             print(e)
 
 
     @timeit
-    def update_train(self,train_no,name,station):
-        sel = sqlalchemy.sql.select(['*']).where(t1.columns.train_no == train_no)
+    def update_train(self,json_file):
+        sel = sqlalchemy.sql.select(['*']).where(t1.columns.train_no == json_file['no'])
         res = engine.execute(sel)
         no = res.rowcount
         try:
             if(no>0):
-                if(name=="name"):
-                    update = t1.update().where(t1.columns.train_no == train_no).values(
-                        {t1.columns.Name: t1.columns.Name, t1.columns.Station: station})
+                if(json_file['name']=="name"):
+                    update = t1.update().where(t1.columns.train_no == json_file['no']).values(
+                        {t1.columns.Name: t1.columns.Name, t1.columns.Station: json_file['station']})
                     engine.execute(update)
-                elif (name == "station"):
-                    update = t1.update().where(t1.columns.train_no == train_no).values(
-                        {t1.columns.Name: t1.columns.Name, t1.columns.Station: station})
+                elif (json_file['station'] == "station"):
+                    update = t1.update().where(t1.columns.train_no ==json_file['no']).values(
+                        {t1.columns.Name: json_file['name'], t1.columns.Station: t1.columns.station})
                     engine.execute(update)
                 else:
-                    update=t1.update().where(t1.columns.train_no==train_no).values({t1.columns.Name:name,t1.columns.Station:station})
+                    update=t1.update().where(t1.columns.train_no==json_file['no']).values({t1.columns.Name:json_file['name'],t1.columns.Station:json_file['station']})
                     engine.execute(update)
-                    print("Updated Successfully")
+                print(json.dumps("Updated Successfully"))
             else:
-                raise Exception ("Enter Valid train_no")
+                raise Exception (json.dumps("Enter Valid train_no"))
         except Exception as e:
             print(e)
 
@@ -102,9 +102,9 @@ class Train_class:
             if(no>0):
                 delete=t1.delete().where(t1.columns.train_no==train_no)
                 engine.execute(delete)
-                print("Deleted Successfully")
+                print(json.dumps("Deleted Successfully"))
             else:
-                raise Exception("Train no doesnot exists")
+                raise Exception(json.dumps("Train no doesnot exists"))
         except Exception as e:
             print(e)
 
