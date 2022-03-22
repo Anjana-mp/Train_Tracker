@@ -4,13 +4,13 @@ import pandas as pd
 from Train import Train_class
 T1=Train_class()
 
-while(n!=5):
+while(n!=6):
     print("1.Create Train\n2.Get All Trains\n3.Train Details by Id\n4.Update Train Details\n5.Delete Train Details\n6.Exit")
     try:
         n=int(input())
         try:
-            if (n > 5):
-                raise Exception(json.dumps("Value must be below or equal to 5"))
+            if (n > 6):
+                raise Exception(json.dumps("Value must be below or equal to 6"))
         except Exception as e:
             print(e)
     except:
