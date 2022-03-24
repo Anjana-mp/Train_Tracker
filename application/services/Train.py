@@ -1,10 +1,10 @@
+from domain.entities import train_entities
 from infrastructure.repository import db_connect
 import response
-
-d1= db_connect.db_connection()
 from functools import wraps
 import time
-
+from constants import *
+from infrastructure.repository.db_connect import DbConnection
 
 
 def timeit(func):
@@ -17,87 +17,67 @@ def timeit(func):
         # first item in the args, ie `args[0]` is `self`
         print(f'Function {func.__name__} Took {total_time:.4f} seconds')
         return result
+
     return timeit_wrapper
 
-class Train_class:
+
+class TrainClass:
+    def __init__(self):
+        self.db = DbConnection()
 
     @timeit
-    def create_train(self,json_file):
-        train_no=json_file['no']
-        name=json_file['name']
-        station=json_file['station']
+    def create_train(self, json_file):
+        train_no = json_file[TRAIN_NO]
+        name = json_file[NAME]
+        station = json_file[STATION]
         try:
-            train_no=int(train_no)
-            if (name== "" or station== ""):
-                return response.empty_values
-            else:
-                output = d1.insert(train_no, name, station)
-                return output
-        except:
+            train_no = int(train_no)
+        except ValueError:
             return response.invalid_trainno
-
-
-
+        output = self.db.insert(train_no, name, station)
+        return output
 
     @timeit
-    def get_train(self,json_file):
-        train_no=json_file['no']
+    def get_train(self, json_file):
+        result = {}
+        train_no = json_file[TRAIN_NO]
         try:
-            train_no=int(train_no)
-            output = d1.train_byid(train_no)
-            if(output== response.user_notexists):
+            train_no = int(train_no)
+            trains = self.db.train_byid(train_no)
+            if trains == response.user_notexists:
                 return response.user_notexists
             else:
-                response.user_retrieved['body']={}
-                response.user_retrieved['body']=output
-                return response.user_retrieved
+                result['data'] = [train_entities.TrainEntity.to_dict(train) for train in trains]
+                return result
 
-        except:
+        except ValueError:
             return response.invalid_trainno
 
     @timeit
     def get_trains(self):
-        output=d1.get_all()
-        response.user_retrieved['body'] =''
-        response.user_retrieved['body'] = output
-        return response.user_retrieved
-
-
-
+        result = {}
+        trains = self.db.get_all()
+        result['data'] = [train_entities.TrainEntity.to_dict(train) for train in trains]
+        return result
 
     @timeit
-    def update_train(self,json_file):
-        train_no=json_file['no']
-        name = json_file['name']
-        station = json_file['station']
-        if (name == ""):
-            name = "name"
-            #print(name)
-        if (station == ""):
-            station = "station"
-            #print(station)
+    def update_train(self, json_file):
+        train_no = json_file[TRAIN_NO]
+        name = json_file[NAME]
+        station = json_file[STATION]
         try:
-            train_no=int(train_no)
-            output = d1.update_train(train_no, name, station)
+            train_no = int(train_no)
+            output = self.db.update_train(train_no, name, station)
             return output
-        except:
+        except ValueError:
             return response.invalid_trainno
-
-
 
     @timeit
-    def delete_train(self,json_file):
-        train_no=json_file['no']
+    def delete_train(self, json_file):
+        train_no = json_file[TRAIN_NO]
         try:
-            train_no=int(train_no)
-            output = d1.delete_train(train_no)
+            train_no = int(train_no)
+            output = self.db.delete_train(train_no)
             return output
-        except:
+        except ValueError:
             return response.invalid_trainno
-
-
-
-
-
-
-
